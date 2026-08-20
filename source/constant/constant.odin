@@ -45,7 +45,7 @@ SETTINGS: SettingsFile
 
 
 init :: proc() {
-    file.load_data("settings.json", &SETTINGS)
-    file.load_data("physics.json", &PHYSICS)
-    file.load_data("pendulum.json", &PENDULUM)
+    file.load_data("data/settings.json", &SETTINGS)
+    file.load_data("data/physics.json", &PHYSICS)
+    file.load_data("data/pendulum.json", &PENDULUM)
 }

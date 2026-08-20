@@ -6,7 +6,7 @@ import "../plotter"
 import rl "vendor:raylib"
 
 
-// WIDGET SPECIFIC DATA STRUCTURES //
+// Widget specific data structures //
 
 EmptyData :: struct {}
 
@@ -24,7 +24,8 @@ PlotData :: struct {
 }
 
 
-// TAGGED UNION FOR WIDGET DATA //
+// Tagged union of widget data //
+
 WidgetData :: union {
     EmptyData,
     TextData,
@@ -34,7 +35,7 @@ WidgetData :: union {
 }
 
 
-// STYLE (RENDERING) RELATED STUFF //
+// Style (rendering) related types //
 
 WidgetColor :: enum u8 {
     INACTIVE,
@@ -49,7 +50,8 @@ WidgetStyle :: struct {
 }
 
 
-// MAIN DATA STRUCTURE //
+
+// main data structure //
 Widget :: struct {
     style_id:  u8,
     parent_id: u16,
