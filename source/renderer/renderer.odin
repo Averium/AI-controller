@@ -5,7 +5,9 @@ import "core:math"
 import rl "vendor:raylib"
 
 import CONST "../constant"
-import pendulum "../pendulum"
+import "../pendulum"
+import "../ui"
+
 
 M_TO_PIX : f32 : 500.0
 PIX_TO_M : f32 : 1.0 / M_TO_PIX
@@ -16,16 +18,11 @@ H: f32
 R: f32
 L: f32
 
-// Global font handle for the renderer
-FONT: rl.Font
-FONT_SPACING: f32 = 1.0
-
 debug_y: f32 = 10.0
 
 
 // Call this once in main() after rl.InitWindow()
 init :: proc() {
-    FONT = rl.LoadFontEx("C:/Windows/Fonts/courbd.ttf", CONST.SETTINGS.FONT_SIZE, nil, 0)
     // Pre-scaled pixel dimensions
     W = CONST.PENDULUM.CART_WIDTH * M_TO_PIX
     H = CONST.PENDULUM.CART_HEIGHT * M_TO_PIX
@@ -33,9 +30,6 @@ init :: proc() {
     L = CONST.PENDULUM.PENDULUM_LENGTH * M_TO_PIX
 }
 
-cleanup :: proc() {
-    rl.UnloadFont(FONT)
-}
 
 draw_pendulum :: proc(p: pendulum.PendulumPose) {
     debug_y = 10.0
@@ -60,17 +54,29 @@ draw_pendulum :: proc(p: pendulum.PendulumPose) {
     rl.DrawCircle(i32(cart_center_x), i32(cart_center_y), R/2, rl.DARKGRAY)
 }
 
-draw_debug_info :: proc(text: string, data: f32, color_1: rl.Color = rl.DARKGRAY, color_2: rl.Color = rl.DARKGRAY) {
-    
-    pos := rl.Vector2{10.0, debug_y}
-    debug_y += f32(CONST.SETTINGS.FONT_SIZE)
 
-    text_cstr := fmt.ctprintf(text)
-    data_cstr := fmt.ctprintf("%.2f", data)
+draw_widget :: proc(widget: ui.Widget) {
 
-    text_size: rl.Vector2 = rl.MeasureTextEx(FONT, text_cstr, f32(CONST.SETTINGS.FONT_SIZE), FONT_SPACING)
+    style: ui.Style = ui.ui.styles[widget.style_id]
 
-    rl.DrawTextEx(FONT, text_cstr, pos, f32(CONST.SETTINGS.FONT_SIZE), FONT_SPACING, color_1)
-    pos.x += text_size.x
-    rl.DrawTextEx(FONT, data_cstr, pos, f32(CONST.SETTINGS.FONT_SIZE), FONT_SPACING, color_2)
+    switch &data in widget.data {
+        case ui.EmptyData:
+            rl.DrawRectangleRec(widget.layout, style.text_color[.INACTIVE])
+        case ui.BoolData:
+            rl.DrawRectangleRec(widget.layout, style.text_color[.INACTIVE])
+        case ui.TextData:
+            rl.DrawRectangleRec(widget.layout, style.text_color[.INACTIVE])
+        case ui.FloatData:
+
+            value_label: cstring = fmt.ctprintf("%.2f", data.value)
+            
+            label_pos: rl.Vector2 = {widget.layout.x, widget.layout.y}
+            value_pos: rl.Vector2 = {widget.layout.x + widget.layout.width, widget.layout.y}
+
+            rl.DrawTextEx(ui.ui.FONT, data.label,  label_pos, f32(style.font_size), ui.ui.FONT_SPACING, style.text_color[.INACTIVE])
+            rl.DrawTextEx(ui.ui.FONT, value_label, value_pos, f32(style.font_size), ui.ui.FONT_SPACING, style.data_color[.INACTIVE])
+
+        case ui.PlotData:
+            rl.DrawRectangleRec(widget.layout, style.text_color[.INACTIVE])
+    }
 }

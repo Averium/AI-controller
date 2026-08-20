@@ -31,7 +31,7 @@ PendulumFile :: struct {
 SettingsFile :: struct {
     SCREEN_WIDTH: i32,
     SCREEN_HEIGHT: i32,
-    FONT_SIZE: i32,
+    FONT_SIZE: u8,
     PHYSICS_UPDATE_FREQUENCY_HZ : i32,
 }
 

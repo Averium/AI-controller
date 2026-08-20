@@ -1,4 +1,4 @@
-package ui_types
+package ui
 
 
 import "../plotter"
@@ -6,27 +6,54 @@ import "../plotter"
 import rl "vendor:raylib"
 
 
+Group :: enum u8 {
+    MAIN,
+    PLOT,
+    DEBUG,
+}
+
+@(private)
+GroupMask :: bit_set[Group; u8]
+
+
+// Style (rendering) related types //
+
+@(private)
+Color :: enum u8 {
+    INACTIVE,
+    ACTIVE,
+}
+
+
+Style :: struct {
+    font_size: u8,
+    text_color: [Color]rl.Color,
+    data_color: [Color]rl.Color,
+}
+
+
 // Widget specific data structures //
 
 EmptyData :: struct {}
 
-TextData :: struct { label: string }
+TextData :: struct { label: cstring }
 
-BoolData :: struct { label: string, state: bool }
+BoolData :: struct { label: cstring, state: bool }
 
-FloatData :: struct { label: string,  value: f32 }
+FloatData :: struct { label: cstring,  value: f32 }
 
 PlotData :: struct {
-    label: string,
+    label: cstring,
     series: []plotter.Plot,
     upper_bound: f32,
     lower_bound: f32,
 }
 
-
-// Tagged union of widget data //
-
+@(private)
 WidgetData :: union {
+    
+    // Tagged union of widget data //
+
     EmptyData,
     TextData,
     BoolData,
@@ -35,27 +62,12 @@ WidgetData :: union {
 }
 
 
-// Style (rendering) related types //
-
-WidgetColor :: enum u8 {
-    INACTIVE,
-    ACTIVE,
-}
-
-
-WidgetStyle :: struct {
-    font_size: i8,
-    text_color: [WidgetColor]rl.Color,
-    data_color: [WidgetColor]rl.Color,
-}
-
-
-
-// main data structure //
 Widget :: struct {
+
+    // main data structure //
+
     style_id:  u8,
-    parent_id: u16,
-    widget_id: u16,
     layout: rl.Rectangle,
-    type: WidgetData,
+    group: Group,
+    data: WidgetData,
 }

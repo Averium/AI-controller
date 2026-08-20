@@ -4,6 +4,7 @@ import "core:math"
 import "core:thread"
 import "core:time"
 import "core:sync"
+import "core:fmt"
 
 import rl "vendor:raylib"
 
@@ -11,6 +12,7 @@ import "renderer"
 import CONST "constant"
 import "pendulum"
 import "events"
+import "ui"
 
 
 ApplicationState :: struct {
@@ -91,12 +93,17 @@ render_loop :: proc() {
         local_sim_time = sim_time
         sync.mutex_unlock(&mutex)
 
+        ui.set_value(ui.sim_time_label, local_sim_time)
+        ui.set_value(ui.ren_time_label, render_time)
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
         renderer.draw_pendulum(render_pose)
-        renderer.draw_debug_info("Simulation time [ms]: ", local_sim_time, color_2=rl.RED)
-        renderer.draw_debug_info(" Rendering time [ms]: ", render_time)
+
+        for widget in ui.ui.widgets {
+            renderer.draw_widget(widget)
+        }
 
         rl.EndDrawing()
     }
@@ -114,6 +121,7 @@ main :: proc() {
     pendulum.init()
     renderer.init()
     events.init()
+    ui.init()
 
     pendulum_state.q2 = 0.1
 
