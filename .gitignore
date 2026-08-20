@@ -1,0 +1,13 @@
+# Odin build output
+*.exe
+*.bin
+*.out
+
+# Raylib generated binaries/temp files
+*.obj
+*.pdb
+*.o
+
+# OS generated files
+.DS_Store
+Thumbs.db
