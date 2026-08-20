@@ -13,15 +13,16 @@ A high-performance, multithreaded inverted pendulum (cart-pole) simulation built
 
 ## Project Structure
 
-```text
-.
-├── constant/       # Global constants and simulation parameters
-├── pendulum/       # Physical state data structures and RK4 integration
-├── renderer/       # Raylib visualization and font debug overlays
-├── simulation/     # Simulation setup and JSON file loading utilities
-├── config.json     # Externalized simulation parameters
-└── main.odin       # Application entry point and main event loops
-```
+| Path | Description |
+|---|---|
+| `constant/` | Global constants and simulation parameters |
+| `pendulum/` | Physical state structures, dynamics, and RK4 integration |
+| `renderer/` | Raylib visualization and debug metric overlays |
+| `simulation/` | Simulation setup, environment management, and JSON configuration loading |
+| `pendulum.json` | Inverted pendulum physical parameters |
+| `physics.json` | Physics and numerical simulation parameters |
+| `settings.json` | General application and runtime settings |
+| `main.odin` | Application entry point and main event loops |
 
 ## Getting Started
 
