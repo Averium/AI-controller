@@ -32,6 +32,7 @@ init :: proc() {
 
 
 draw_pendulum :: proc(p: pendulum.PendulumPose) {
+    
     debug_y = 10.0
 
     cart_center_x := (f32(CONST.SETTINGS.SCREEN_WIDTH) / 2.0) + (p.x * M_TO_PIX)

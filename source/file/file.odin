@@ -7,6 +7,8 @@ import "core:encoding/json"
 
 load_data :: proc(filename: string, struct_ptr: any) -> bool {
 
+    fmt.println(filename)
+
     data, read_error := os.read_entire_file(filename, context.allocator)
     if read_error != nil {
         fmt.eprintf("Failed to read file: %s\n", filename)

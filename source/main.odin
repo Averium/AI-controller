@@ -132,8 +132,9 @@ main :: proc() {
     if physics_thread != nil {
         thread.start(physics_thread)
     }
-    defer thread.destroy(physics_thread)
 
     render_loop()
+    
+    thread.destroy(physics_thread)
 
 }
